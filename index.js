@@ -4,10 +4,20 @@ var html = require('choo/html')
 var css = require('sheetify')
 var choo = require('choo')
 
-css('./index.css')
 css('tachyons')
 
 css`
+  .menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 150;
+  }
+
   .menu--visible {
     pointer-events: auto;
   }
@@ -16,12 +26,20 @@ css`
     background-color: #fff;
     color: #fff;
     position: relative;
+    width: 90%;
     height: 100%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     transform: translateX(-103%);
     contain: strict;
+    display: flex;
+    flex-direction: column;
     will-change: transform;
-    z-index: 1;
+    z-index: 160;
     pointer-events: auto;
+    width: 300px;
+    height: 667px;
+    box-shadow: none;
+    background-color: #ddd;
   }
 
   .menu--visible .app-menu {
@@ -61,12 +79,10 @@ css`
 var app = choo()
 app.use(require('choo-log')())
 app.route('/', function (state, emit) {
-  var visible = state.visible
-
   return html`
     <body class="ma0">
-      <aside class="${visible ? 'menu menu--visible' : 'menu'}" onclick=${toggle}>
-        <div class="h-100 mw-90 app-menu"></div>
+      <aside class="${state.visible ? 'menu menu--visible' : 'menu'}" onclick=${toggle}>
+        <div class="app-menu"></div>
       </aside>
       <main class="mw6 vh-100 bg-light-gray">
         <div class="bg-silver">
